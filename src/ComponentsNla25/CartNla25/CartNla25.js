@@ -14,14 +14,15 @@ function CartNla25(props)
                     </tr>
                 </thead>
                 <tbody>
-                    {props.cartList.map((item, key) => (
+                    {props.cartList.length > 0 ? 
+                    props.cartList.map((item, key) => (
                         <tr key={key}>
                             <td>{item.name}</td>
                             <td>{item.quantity}</td>
                             <td>{item.price}</td>
                             <td><button type="button" className="btn btn-danger" value={item.sku} onClick={props.deleteItem}>Delete</button></td>
                         </tr>
-                    ))}
+                    )): <tr></tr>}
 
                 </tbody>
         </table>

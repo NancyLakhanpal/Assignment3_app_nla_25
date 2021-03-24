@@ -10,11 +10,22 @@ const [inventory, setInventory] = useState([]);
 const [cart, setCart] = useState([]);
 const [price, setPrice] = useState(0);
 
-useEffect(async () => {
-    loadInventory();
-    const newCartContent = await loadCart();
-    setCart(newCartContent);
-    calculatePrice(newCartContent);
+useEffect(() => {
+    async function loadInventory(){
+        getInventory()
+        .then(json=> {
+            setInventory(json);
+            const newCartContent =  loadCart();
+            setCart(newCartContent);
+            return newCartContent;
+        }).then(newCartContent => {
+            calculatePrice(newCartContent);
+        })
+        .catch(err => {
+            console.error(err)
+        });
+    }
+   loadInventory();
 },
  [])
 
@@ -70,6 +81,7 @@ function loadInventory()
  async function loadCart() {
    return await getCart()
         .then(json => {
+            setCart(json);
             return json;
         })
         .catch(err => {
